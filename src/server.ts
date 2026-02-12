@@ -1,7 +1,13 @@
+import express from 'express';
+
+const app = express();
+const port = 3000; 
 let print = console.log
 
-function greet(name : string) : string {
-    return `bonjour ${name}`
-}
+app.get('/', (req : object, res : object) => {
+    res.send("Bienvenue sur mon serveur API");
+});
 
-console.log(greet("william"))
+app.listen(port,() => {
+    console.log(`serveur lancé sur http://localhost:${port}`);
+});
