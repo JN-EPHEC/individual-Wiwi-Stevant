@@ -1,6 +1,7 @@
 import express from 'express';
 import userRoutes from "./routes/userRoutes";
 import sequelize from "./config/database";
+import User from "./models/User";
 
 const app = express();
 const port = 3000; 
@@ -37,6 +38,13 @@ async function testConnection() {
     }
     catch (error) {
         console.error("il y a un probleme avec la connection db" + error);
+    }
+    try {
+        await User.sync({ force: true });
+        console.log('The table for the User model was just (re)created!');
+    }
+    catch (error) {
+        console.error("é bé la synchro bah elle a pas fonctionner, " + error)
     }
 }
 
