@@ -9,6 +9,7 @@ let print = console.log
 
 app.use(express.json());
 app.use("/api", userRoutes);
+// app.use("/api", countRoutes); 
 app.use('/',express.static('public'));
 
 async function testConnection() {
