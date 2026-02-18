@@ -9,13 +9,13 @@
 </head>
 <body onload="init()">
     <h1>Liste des étudiants</h1>
-    <form action="">
-        <fieldset></fieldset>
-        <input type="text" id="nom" name="Nom" placeholder="Nom">
-        <input type="text" id="prenom" name="Prenom" placeholder="Prénom">
-        <button type="submit">Ajouté</button>
+    <form id="userForm">
+        <fieldset>ajout d'étudiants</fieldset>
+        <input type="text" id="nom" name="lastName" placeholder="Nom" required>
+        <input type="text" id="prenom" name="firstName" placeholder="Prénom" required>
+        <button type="submit">Ajouter</button>
     </form>
-    <ul>
+    <ul id="userList">
     </ul>
     
 </body>
