@@ -5,7 +5,7 @@ function init() {
 
 async function loadUsers() {
     try {
-        const response = await fetch('/api/users');
+        const response = await fetch('/api');
         const users = await response.json();
         const userList = document.getElementById('userList');
         userList.innerHTML = '';
@@ -30,7 +30,7 @@ async function addUser(event) {
     const firstName = document.getElementById('prenom').value;
     const lastName = document.getElementById('nom').value;
     try {
-        const response = await fetch('/api/users', {
+        const response = await fetch('/api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ async function addUser(event) {
 
 async function deleteUser(id) {
     try {
-        const response = await fetch(`/api/users/${id}`, {
+        const response = await fetch(`/api/${id}`, {
             method: 'DELETE'
         });
         if (response.ok) {
