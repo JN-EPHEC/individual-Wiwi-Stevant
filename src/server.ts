@@ -2,6 +2,7 @@ import express from 'express';
 import userRoutes from "./routes/userRoutes.js";
 import sequelize from "./config/database.js";
 import User from "./models/User.js";
+import {requestLogger} from "./middlewares/logger.js"
 
 const app = express();
 const port = 3000; 
@@ -10,6 +11,7 @@ let print = console.log
 app.use(express.json());
 app.use("/api", userRoutes);
 app.use('/',express.static('public'));
+ app.use(requestLogger);
 
 async function testConnection() {
     try {
