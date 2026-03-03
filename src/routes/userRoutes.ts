@@ -4,25 +4,49 @@ import User from '../models/User.js';
 import * as userController from "../controllers/userController.js";
 
 const router = Router();
-
+/**
+ * @swagger
+ * /api/users :
+ *  get:
+ *      summary: récupere la liqte des utilisateur
+ *      tags: [Users]
+ *      responses:
+ *          200:
+ *              description: Succès
+ */
 router.get("/", userController.getAllUsers);
-router.get("/", userController.postAllUsers);
-router.get("/:id", userController.deleteUser);
-// router.get('/users', async (req : Request, res : Response) => {
-//     const tUsers = await User.findAll();
-//     res.json(tUsers);
-// });
 
-// router.post('/users', async (req : Request, res : Response) => {
-//     const users = await User.create(req.body);
-//     res.json(users)
-// });
+/**
+ * @swagger
+ * /api/users :
+ *  post:
+ *      summary: crée un nouvel utilisateur
+ *      tags: [Users]
+ *      responses:
+ *          200:
+ *              description: Utilisateur créé avec succès
+ */
+router.post("/", userController.postAllUsers);
 
-// router.delete('/users/:id', async (req : Request, res : Response) => {
-//     const users = await User.findByPk(req.params.id);
-//     if (!users) return res.status(404).json({error : "aucun user avec cette id"});
-//     await users.destroy();
-//     res.json({message: `l'user ${req.params.id} a été supprimer`});
-// });
+/**
+ * @swagger
+ * /api/users/{id} :
+ *  delete:
+ *      summary: supprime un utilisateur par son ID
+ *      tags: [Users]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *                type: integer
+ *            description: ID de l'utilisateur à supprimer
+ *      responses:
+ *          200:
+ *              description: Utilisateur supprimé avec succès
+ *          404:
+ *              description: Utilisateur non trouvé
+ */
+router.delete("/:id", userController.deleteUser);
 
 export default router;
