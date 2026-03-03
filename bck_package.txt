@@ -1,0 +1,24 @@
+{
+  "name": "dev3-backend-tp1",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000i\u0000n\u0000d\u0000i\u0000v\u0000i\u0000d\u0000u\u0000a\u0000l\u0000-\u0000W\u0000i\u0000w\u0000i\u0000-\u0000S\u0000t\u0000e\u0000v\u0000a\u0000n\u0000t\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JN-EPHEC/individual-Wiwi-Stevant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JN-EPHEC/individual-Wiwi-Stevant/issues"
+  },
+  "homepage": "https://github.com/JN-EPHEC/individual-Wiwi-Stevant#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
