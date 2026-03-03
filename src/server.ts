@@ -3,7 +3,6 @@ import userRoutes from "./routes/userRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./config/swagger";
 import sequelize from "./config/database.js";
-import User from "./models/User.js";
 import {requestLogger} from "./middlewares/logger.js"
 import { errorHandler } from "./middlewares/errorHandler"; // Import du nouveau middleware
 import cors from 'cors';
@@ -13,13 +12,13 @@ const app = express();
 const port = 3000; 
 let print = console.log
 
+app.use(cors());
 app.use(requestLogger);
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", userRoutes);
 app.use('/',express.static('public'));
 app.use(errorHandler);
-app.use(cors());
 
 async function testConnection() {
     try {
