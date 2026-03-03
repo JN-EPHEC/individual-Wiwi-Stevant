@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { Request, Response } from "express";
 import User from '../models/User.js';
 import * as userController from "../controllers/userController.js";
+import { checkIdParam } from "../middlewares/checkIdParam.js";
 
 const router = Router();
 /**
@@ -47,6 +48,6 @@ router.post("/", userController.postAllUsers);
  *          404:
  *              description: Utilisateur non trouvé
  */
-router.delete("/:id", userController.deleteUser);
+router.delete("/:id", checkIdParam, userController.deleteUser);
 
 export default router;
