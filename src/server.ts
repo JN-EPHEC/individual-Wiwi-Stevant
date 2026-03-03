@@ -6,6 +6,7 @@ import sequelize from "./config/database.js";
 import User from "./models/User.js";
 import {requestLogger} from "./middlewares/logger.js"
 import { errorHandler } from "./middlewares/errorHandler"; // Import du nouveau middleware
+import cors from 'cors';
 
 
 const app = express();
@@ -18,7 +19,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/api", userRoutes);
 app.use('/',express.static('public'));
 app.use(errorHandler);
-
+app.use(cors());
 
 async function testConnection() {
     try {
