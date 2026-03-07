@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import './App.css'
+import { FormEvent, useEffect, useState } from "react";
+import "./App.css";
 
-// Définition d'une interface pour le typage
-// Sera couvert plus en profondeur en TH
 interface User {
   id: number;
   firstName: string;
@@ -10,37 +8,122 @@ interface User {
 }
 
 function App() {
-  // 1. Définition de l'état
-  const [data, setData] = useState<User[]>([]);
-  // 2. Appel API au montage du composant
+  const [users, setUsers] = useState<User[]>([]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function loadUsers() {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:3000/api");
+      if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    fetch("http://localhost:3000/api")
-      .then(res => res.json())
-      .then(result => setData(result))
-      .catch(err => console.error(err));
+    loadUsers();
   }, []);
 
-  // 3. Rendu (JSX)
+  async function addUser(event: FormEvent) {
+    event.preventDefault();
+    if (!firstName.trim() || !lastName.trim()) return;
+
+    try {
+      const res = await fetch("http://localhost:3000/api", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName }),
+      });
+
+      if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+      setFirstName("");
+      setLastName("");
+      await loadUsers();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
+  async function deleteUser(id: number) {
+    try {
+      const res = await fetch(`http://localhost:3000/api/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`Erreur HTTP ${res.status}`);
+      await loadUsers();
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
   return (
     <div className="app">
-      <header className="app__header">
-        <h1>Liste des utilisateurs</h1>
-        <p className="app__subtitle">Voici la liste des personnes récupérées depuis l'API.</p>
-      </header>
+      <div className="card">
+        <div className="card-header">
+          <h1>Liste des Étudiants</h1>
+        </div>
 
-      {data.length === 0 ? (
-        <p className="app__loading">Chargement des utilisateurs…</p>
-      ) : (
-        <ul className="user-list">
-          {data.map((item) => (
-            <li key={item.id} className="user-item">
-              <span className="user-item__name">{item.firstName} {item.lastName}</span>
-              <span className="user-item__id">#{item.id}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+        <div className="card-body">
+          <form className="mb-4" onSubmit={addUser}>
+            <fieldset className="form-fieldset">
+              <legend>Ajouter un Étudiant</legend>
+              <div className="row">
+                <div className="col">
+                  <input
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="form-control"
+                    placeholder="Prénom"
+                    required
+                  />
+                </div>
+                <div className="col">
+                  <input
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="form-control"
+                    placeholder="Nom"
+                    required
+                  />
+                </div>
+                <div className="col-auto">
+                  <button type="submit" className="btn btn-success">
+                    Ajouter
+                  </button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+
+          {error ? <div className="alert">Erreur : {error}</div> : null}
+          {loading ? (
+            <div className="alert">Chargement...</div>
+          ) : (
+            <ul className="list-group">
+              {users.map((user) => (
+                <li key={user.id} className="list-group-item">
+                  <span>
+                    {user.firstName} {user.lastName}
+                  </span>
+                  <button className="btn btn-danger" onClick={() => deleteUser(user.id)}>
+                    X
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
+
 export default App;
